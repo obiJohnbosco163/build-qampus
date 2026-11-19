@@ -43,6 +43,11 @@ export async function createPost(formData: FormData) {
     .select('id')
     .single()
 
+  if (error) {
+    console.log('[v0] Posts insert error:', error)
+    console.log('[v0] Error code:', error.code)
+    console.log('[v0] Error message:', error.message)
+  }
   if (error || !post) redirect('/post/new?error=save')
   if (taggedProfiles?.length) {
     const { error: tagError } = await supabase.from('post_tags').insert(taggedProfiles.map((profile) => ({
@@ -50,7 +55,12 @@ export async function createPost(formData: FormData) {
       tagged_by: user.id,
       tagged_user_id: profile.id,
     })))
-    if (tagError) redirect('/post/new?error=tag-save')
+    if (tagError) {
+      console.log('[v0] Post tags insert error:', tagError)
+      console.log('[v0] Tag error code:', tagError.code)
+      console.log('[v0] Tag error message:', tagError.message)
+      redirect('/post/new?error=tag-save')
+    }
   }
   revalidatePath('/feed')
   revalidatePath('/inbox')
