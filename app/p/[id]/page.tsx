@@ -1,14 +1,15 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { PostProofActions } from '@/components/qampus/post-proof-actions'
+import { ReportPostForm } from '@/components/qampus/report-post-form'
 import { PublicHeader } from '@/components/qampus/public-header'
 import { ArrowLeft, ArrowUpRight, Fingerprint, ShieldCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 
 const labels: Record<string, string> = { siwes: 'SIWES', project: 'Project', internal_defence: 'Internal defence', external_defence: 'External defence', experience: 'Experience', general: 'Milestone' }
 
-export default async function PostPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
+export default async function PostPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ report?: string }> }) {
+  const [{ id }, { report: reportStatus }] = await Promise.all([params, searchParams])
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound()
   const supabase = await createClient()
   const { data: post } = await supabase.from('posts').select('id, author_id, milestone_type, title, summary, story, visibility, created_at').eq('id', id).maybeSingle()
@@ -42,6 +43,7 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
           {!anchor && session.user?.id === post.author_id && author && <PostProofActions postId={post.id} walletAddress={author.wallet_address} post={{ milestone_type: post.milestone_type, title: post.title, summary: post.summary, story: post.story }} alreadyAnchored={false} />}
           {!!endorsements?.length && <div className="endorsement-list"><h3>Endorsements <span>{endorsements.length}</span></h3>{endorsements.map((item) => <div key={item.id}><span className="status-dot" /> Attestation <code>{item.attestation_hash}</code></div>)}</div>}
         </section>
+        {session.user && session.user.id !== post.author_id && <ReportPostForm postId={post.id} status={reportStatus} />}
       </div>
       </article>
     </main>

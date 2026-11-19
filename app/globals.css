@@ -1652,8 +1652,15 @@ textarea.platform-input { resize: vertical; line-height: 1.75; }
 .composer-footer > span, .composer-security-note { color: #858191; font-size: 9px; line-height: 1.6; }
 .composer-footer .button-primary { min-height: 39px; font-size: 10px; }
 .composer-security-note { margin: 14px 2px 0; text-align: center; }
-.post-detail-page { max-width: 820px; margin-inline: auto; }
-.post-detail-meta { display: flex; align-items: center; gap: 12px; }
+  .post-detail-page { max-width: 820px; margin-inline: auto; }
+  .post-report { margin-top: 14px; padding: 14px 16px; border: 1px solid var(--qampus-line); border-radius: 8px; background: rgba(255,255,255,.018); }
+  .post-report-trigger { padding: 0; border: 0; color: #a7a1b2; background: transparent; font-size: 10px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .post-report-trigger:hover { color: #f0c0c0; }
+  .post-report-form { display: grid; gap: 10px; }
+  .post-report-actions { display: flex; justify-content: flex-end; gap: 8px; }
+  .post-report-actions .button-primary { min-height: 38px; padding: 0 14px; font-size: 10px; }
+  .report-confirmation { margin: 14px 0 0; color: #a9d9bd; font-size: 11px; }
+  .post-detail-meta { display: flex; align-items: center; gap: 12px; }
 .post-detail-card > h1 { margin: 22px 0 8px; color: #f5f2fb; font-size: clamp(30px, 5vw, 47px); font-weight: 520; letter-spacing: -.065em; line-height: 1.07; }
 .post-detail-summary { margin: 0; color: #b6b1c1; font-size: 14px; line-height: 1.7; }
 .post-detail-author { display: flex; align-items: center; gap: 10px; margin-top: 21px; padding: 14px 0; border-top: 1px solid rgba(231,226,247,.08); border-bottom: 1px solid rgba(231,226,247,.08); }

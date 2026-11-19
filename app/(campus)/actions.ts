@@ -64,6 +64,36 @@ export async function createCircleRequest(formData: FormData) {
   redirect('/circles?sent=1')
 }
 
+export async function reportPost(formData: FormData) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/auth/sign-in')
+
+  const postId = String(formData.get('post_id') ?? '')
+  const reason = String(formData.get('reason') ?? '').trim()
+  if (!/^[0-9a-f-]{36}$/i.test(postId) || reason.length < 3 || reason.length > 500) {
+    redirect(`/p/${encodeURIComponent(postId)}?report=validation`)
+  }
+
+  const { data: post } = await supabase
+    .from('posts')
+    .select('id, author_id')
+    .eq('id', postId)
+    .maybeSingle()
+  if (!post || post.author_id === user.id) redirect(`/p/${postId}?report=unavailable`)
+
+  const { error } = await supabase.from('reports').insert({
+    reporter_id: user.id,
+    post_id: post.id,
+    reported_profile_id: null,
+    reason,
+  })
+  if (error) redirect(`/p/${postId}?report=failed`)
+
+  revalidatePath(`/p/${postId}`)
+  redirect(`/p/${postId}?report=submitted`)
+}
+
 export async function signOut() {
   const supabase = await createClient()
   await supabase.auth.signOut()

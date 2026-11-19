@@ -30,9 +30,10 @@ P1 — authenticated campus product, QoreChain registry and verification.
 - QampusRegistry anchor/endorsement contract, fingerprint helper, receipt/event validation and Supabase anchor indexing route.
 - QoreX-linked wallet matching and EVM-window messaging in the anchor UI.
 - Security headers already present; production build and TypeScript checks pass.
+- Added an authenticated post-report flow using the existing reports table and submitter-only RLS policy; users cannot report their own posts. TypeScript, production build, and all four Playwright security tests pass.
 
 ## Remaining external setup / scope
 - Deploy the contract and set `NEXT_PUBLIC_QAMPUS_REGISTRY_ADDRESS` before live anchors are possible.
 - Sealed posts need a recipient-card and encryption-key lifecycle/recovery design; keep them disabled until that exists.
-- Role-verified endorsement UI, @tag notifications, moderation, and MCP-backed AI verification are not implemented. Do not imply these are live.
+- Role-verified endorsement UI, @tag notifications, moderator review/decision queue, and MCP-backed AI verification are not implemented. User report submission is live; do not imply moderation review is live.
 - `forge test` could not run because Foundry is unavailable; the test suite only compiled with solc.
