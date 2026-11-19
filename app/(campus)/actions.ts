@@ -52,7 +52,7 @@ export async function createPost(formData: FormData) {
   }
   if (error || !post) {
     console.log('[v0] REDIRECT to /post/new?error=save - error:', !!error, 'post:', !!post)
-    redirect('/post/new?error=save')
+    redirect(`/post/new?error=save&code=${encodeURIComponent(error?.code ?? 'no-row')}`)
   }
   if (taggedProfiles?.length) {
     const { error: tagError } = await supabase.from('post_tags').insert(taggedProfiles.map((profile) => ({
