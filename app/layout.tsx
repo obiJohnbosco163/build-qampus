@@ -5,7 +5,7 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'Qampus — Your campus story, proven.',
   description:
-    'A home for the projects, people, and milestones that make your campus years yours. Share it. Label it. Anchor it when it matters.',
+    'A home for the projects, people, and milestones that make your campus years yours. Sign in with email and verify your QoreX wallet to make your profile yours.',
   applicationName: 'Qampus',
   generator: 'Qampus',
   openGraph: {

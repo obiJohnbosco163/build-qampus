@@ -54,9 +54,9 @@ export function LandingPage() {
           <a href="#trust-layer">Trust layer</a>
           <a href="#about">About</a>
         </nav>
-        <a className="qampus-header-cta" href="#how-it-works">
-          Explore Qampus <ArrowUpRight size={15} aria-hidden="true" />
-        </a>
+        <Link className="qampus-header-cta" href="/auth/sign-in">
+          Sign in <ArrowUpRight size={15} aria-hidden="true" />
+        </Link>
       </header>
 
       <section className="qampus-hero" aria-labelledby="hero-title">
@@ -67,7 +67,7 @@ export function LandingPage() {
             The projects, people, and hard-won milestones that make your years on campus yours. Keep them together. Make the important ones verifiable.
           </p>
           <div className="qampus-hero-actions">
-            <a className="button-primary" href="#how-it-works">See how it works <ArrowRight size={16} aria-hidden="true" /></a>
+            <Link className="button-primary" href="/auth/sign-up">Create your Qampus account <ArrowRight size={16} aria-hidden="true" /></Link>
             <a className="button-quiet" href="#trust-layer">Meet the trust layer <ArrowDown size={14} aria-hidden="true" /></a>
           </div>
           <div className="qampus-hero-footnote">
@@ -174,7 +174,7 @@ export function LandingPage() {
         <p className="section-label">[ YOUR STORY IS STILL BEING WRITTEN ]</p>
         <h2 id="final-title">Make the work count.<br /><span>Keep the people close.</span></h2>
         <p>Qampus is being built for the moments you&apos;ll want to prove — and the ones you&apos;ll simply want to remember.</p>
-        <a className="button-primary" href="#how-it-works">Explore the idea <ArrowRight size={16} aria-hidden="true" /></a>
+        <Link className="button-primary" href="/auth/sign-up">Create your account <ArrowRight size={16} aria-hidden="true" /></Link>
       </section>
 
       <footer className="qampus-footer">
