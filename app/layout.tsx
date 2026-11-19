@@ -3,9 +3,18 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.app',
+  title: 'Qampus — Your campus story, proven.',
+  description:
+    'A home for the projects, people, and milestones that make your campus years yours. Share it. Label it. Anchor it when it matters.',
+  applicationName: 'Qampus',
+  generator: 'Qampus',
+  openGraph: {
+    title: 'Qampus — Your campus story, proven.',
+    description:
+      'Keep your campus milestones together. Make the important ones verifiable.',
+    siteName: 'Qampus',
+    type: 'website',
+  },
   icons: {
     icon: [
       {
@@ -26,11 +35,10 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'light dark',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
-  ],
+  colorScheme: 'dark',
+  themeColor: '#080810',
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default function RootLayout({
