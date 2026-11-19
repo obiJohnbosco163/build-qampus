@@ -34,18 +34,13 @@ export function WalletOnboarding() {
       const evm = window.qorex?.evm
       if (!evm) throw new Error('QoreX native wallet was found, but its network could not be detected. Reload Qampus and try again.')
 
-      const activeNetwork = await evm.request({ method: 'eth_chainId' })
-      const activeEvmChainId = typeof activeNetwork === 'number' || typeof activeNetwork === 'string'
-        ? Number(activeNetwork)
-        : Number.NaN
-      const chainId = activeNetwork === QORECHAIN_MAINNET_CHAIN_ID || activeEvmChainId === QORECHAIN_MAINNET_EVM_CHAIN_ID
+      const activeEvmChainId = Number(await evm.request({ method: 'eth_chainId' }))
+      const chainId = activeEvmChainId === QORECHAIN_MAINNET_EVM_CHAIN_ID
         ? QORECHAIN_MAINNET_CHAIN_ID
-        : activeNetwork === QORECHAIN_TESTNET_CHAIN_ID || activeEvmChainId === QORECHAIN_TESTNET_EVM_CHAIN_ID
+        : activeEvmChainId === QORECHAIN_TESTNET_EVM_CHAIN_ID
           ? QORECHAIN_TESTNET_CHAIN_ID
           : null
-      if (!chainId) {
-        throw new Error(`QoreX reported an unsupported active network (${String(activeNetwork)}). Select QoreChain mainnet or Diana testnet, then try again.`)
-      }
+      if (!chainId) throw new Error('Select QoreChain mainnet or Diana testnet in QoreX, then try again.')
 
       await wallet.enable(chainId)
       const key = await wallet.getKey(chainId)
