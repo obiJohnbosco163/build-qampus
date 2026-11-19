@@ -8,12 +8,15 @@ importers:
 
   .:
     dependencies:
+      '@ai-sdk/mcp':
+        specifier: ^2.0.101
+        version: 2.0.101(zod@4.6.7)
       '@base-ui/react':
         specifier: ^1.5.0
         version: 1.5.0(@date-fns/tz@1.4.1)(@types/react@19.2.14)(date-fns@4.1.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@qorechain/evm':
         specifier: 0.14.0
-        version: 0.14.0(viem@2.58.0(typescript@5.7.3)(zod@3.25.76))
+        version: 0.14.0(viem@2.58.0(typescript@5.7.3)(zod@4.6.7))
       '@qorechain/handles':
         specifier: 0.1.0
         version: 0.1.0
@@ -37,7 +40,7 @@ importers:
         version: 0.1.0
       '@qorechain/sdk':
         specifier: 0.14.0
-        version: 0.14.0(viem@2.58.0(typescript@5.7.3)(zod@3.25.76))
+        version: 0.14.0(viem@2.58.0(typescript@5.7.3)(zod@4.6.7))
       '@qorechain/wallet-adapter':
         specifier: 0.6.0
         version: 0.6.0(@cosmjs/proto-signing@0.32.4)(@cosmjs/stargate@0.32.4(debug@4.4.3))
@@ -50,6 +53,9 @@ importers:
       '@vercel/analytics':
         specifier: 1.6.1
         version: 1.6.1(next@16.4.6(@babel/core@7.29.7)(@playwright/test@1.65.1)(@types/node@24.10.4)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)
+      ai:
+        specifier: ^7.0.176
+        version: 7.0.176(zod@4.6.7)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -82,7 +88,7 @@ importers:
         version: 1.4.0
       viem:
         specifier: ^2.58.0
-        version: 2.58.0(typescript@5.7.3)(zod@3.25.76)
+        version: 2.58.0(typescript@5.7.3)(zod@4.6.7)
     devDependencies:
       '@playwright/test':
         specifier: ^1.65.1
@@ -92,10 +98,10 @@ importers:
         version: 0.1.0
       '@qorechain/qorex-synpress':
         specifier: 0.1.0
-        version: 0.1.0(@playwright/test@1.65.1)(typescript@5.7.3)(zod@3.25.76)
+        version: 0.1.0(@playwright/test@1.65.1)(typescript@5.7.3)(zod@4.6.7)
       '@qorechain/qorex-wallet-mock':
         specifier: 0.1.0
-        version: 0.1.0(typescript@5.7.3)(zod@3.25.76)
+        version: 0.1.0(typescript@5.7.3)(zod@4.6.7)
       '@tailwindcss/postcss':
         specifier: ^4.3.3
         version: 4.3.3
@@ -122,6 +128,28 @@ packages:
 
   '@adraffy/ens-normalize@1.11.1':
     resolution: {integrity: sha512-nhCBV3quEgesuf7c7KYfperqSS14T8bYuvJ8PcLJp6znkZpFc0AuW4qBtr8eKVyPPe/8RSr7sglCWPU5eaxwKQ==}
+
+  '@ai-sdk/gateway@4.0.149':
+    resolution: {integrity: sha512-xUDEBEU/3I4+8vAKomK3qCIIYHlWv0YF23EWxO+Th6lVAGWYNcdVn5uj5cV5Zp6W1PGdBVT+MQqO9sNoY3fY/g==}
+    engines: {node: '>=22'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
+  '@ai-sdk/mcp@2.0.101':
+    resolution: {integrity: sha512-lat/6Y6IT5zBRoy1klgfGs9KWhYPjxLkbws4iLd4j3svw2IKcc8nP3huNn8vSqn4VlzGo8nYH20mJITt+eSFrA==}
+    engines: {node: '>=22'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
+  '@ai-sdk/provider-utils@5.0.82':
+    resolution: {integrity: sha512-9s3Le9LsTR0exy14H8SERw4uMgFhiP0yJVoLefzfQCnnptj71noYh1AoVEsjfJjmMH1y16+1OqBVTDpTpU6M3Q==}
+    engines: {node: '>=22'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
+  '@ai-sdk/provider@4.0.39':
+    resolution: {integrity: sha512-jRvAhvW23+TeMGVCME2WGejP/TjzyDg7TplUep3t8HcEYnC2/8zqhCy9RRrjjVs1ljcygABZ8pQ21MbCRdF01w==}
+    engines: {node: '>=22'}
 
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -864,6 +892,9 @@ packages:
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
 
+  '@standard-schema/spec@1.1.0':
+    resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
+
   '@supabase/auth-js@2.119.0':
     resolution: {integrity: sha512-WI7KqJRxqZjm77PlRO/VfKretL4SG8g8stWfBmpyx9To+fFapZlSbXA8QkduoMvr72rRpIF24ZLrjktBrp+ZFA==}
     engines: {node: '>=22.0.0'}
@@ -1042,6 +1073,13 @@ packages:
       vue-router:
         optional: true
 
+  '@vercel/oidc@3.2.0':
+    resolution: {integrity: sha512-UycprH3T6n3jH0k44NHMa7pnFHGu/N05MjojYr+Mc6I7obkoLIJujSWwin1pCvdy/eOxrI/l3uDLQsmcrOb4ug==}
+    engines: {node: '>= 20'}
+
+  '@workflow/serde@4.1.0':
+    resolution: {integrity: sha512-pav4F2BoirECWR7Nf1TKt+2eETcBj7jj4cBefQ8VXQCA6NPkaKeLfj/zMgi+3zYV5ZIBT4GuUiphsj0/b9hPQQ==}
+
   abitype@1.2.3:
     resolution: {integrity: sha512-Ofer5QUnuUdTFsBRwARMoWKOH1ND5ehwYhJ3OJ/BQO+StkwQjHw0XyVh4vDttzHB7QOFhPHa/o413PJ82gU/Tg==}
     peerDependencies:
@@ -1060,6 +1098,12 @@ packages:
   agent-base@6.0.2:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
     engines: {node: '>= 6.0.0'}
+
+  ai@7.0.176:
+    resolution: {integrity: sha512-zIbiX58LQx3NB3+e0vYFcn4fipIqkVG9FHtWj7HVBCjh5f7GfWz5WVDeKmQ+M89RHAw9MU9pzfkFIAYEBeQi0g==}
+    engines: {node: '>=22'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
 
   ajv-formats@3.0.1:
     resolution: {integrity: sha512-8iUql50EUR+uUcdRQ3HDqa6EVyo3docL8g5WJ3FNcWmu62IbkGUue/pEyLBW8VGKKucTPgqeks4fIU1DA4yowQ==}
@@ -1719,6 +1763,9 @@ packages:
 
   json-schema-typed@8.0.2:
     resolution: {integrity: sha512-fQhoXdcvc3V28x7C7BMs4P5+kNlgUURe2jmUT1T//oBRMDrqy1QPelJimwZGo7Hg9VPV3EQV5Bnq4hbFy2vetA==}
+
+  json-schema@0.4.0:
+    resolution: {integrity: sha512-es94M3nTIfsEPisRafak+HDLfHXnKBhV3vU5eqPcS3flIWqcxJWgXHXiey3YrpaNsanY5ei1VoYEbOzijuq9BA==}
 
   json5@2.2.3:
     resolution: {integrity: sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==}
@@ -2480,6 +2527,33 @@ packages:
 snapshots:
 
   '@adraffy/ens-normalize@1.11.1': {}
+
+  '@ai-sdk/gateway@4.0.149(zod@4.6.7)':
+    dependencies:
+      '@ai-sdk/provider': 4.0.39
+      '@ai-sdk/provider-utils': 5.0.82(zod@4.6.7)
+      '@vercel/oidc': 3.2.0
+      zod: 4.6.7
+
+  '@ai-sdk/mcp@2.0.101(zod@4.6.7)':
+    dependencies:
+      '@ai-sdk/provider': 4.0.39
+      '@ai-sdk/provider-utils': 5.0.82(zod@4.6.7)
+      cross-spawn: 7.0.6
+      pkce-challenge: 5.0.1
+      zod: 4.6.7
+
+  '@ai-sdk/provider-utils@5.0.82(zod@4.6.7)':
+    dependencies:
+      '@ai-sdk/provider': 4.0.39
+      '@standard-schema/spec': 1.1.0
+      '@workflow/serde': 4.1.0
+      eventsource-parser: 3.1.0
+      zod: 4.6.7
+
+  '@ai-sdk/provider@4.0.39':
+    dependencies:
+      json-schema: 0.4.0
 
   '@alloc/quick-lru@5.2.0': {}
 
@@ -3294,9 +3368,9 @@ snapshots:
 
   '@protobufjs/utf8@1.1.2': {}
 
-  '@qorechain/evm@0.14.0(viem@2.58.0(typescript@5.7.3)(zod@3.25.76))':
+  '@qorechain/evm@0.14.0(viem@2.58.0(typescript@5.7.3)(zod@4.6.7))':
     dependencies:
-      viem: 2.58.0(typescript@5.7.3)(zod@3.25.76)
+      viem: 2.58.0(typescript@5.7.3)(zod@4.6.7)
 
   '@qorechain/handles@0.1.0':
     dependencies:
@@ -3358,10 +3432,10 @@ snapshots:
       '@scure/bip32': 2.4.0
       '@scure/bip39': 2.4.0
 
-  '@qorechain/qorex-synpress@0.1.0(@playwright/test@1.65.1)(typescript@5.7.3)(zod@3.25.76)':
+  '@qorechain/qorex-synpress@0.1.0(@playwright/test@1.65.1)(typescript@5.7.3)(zod@4.6.7)':
     dependencies:
       '@playwright/test': 1.65.1
-      '@qorechain/qorex-wallet-mock': 0.1.0(typescript@5.7.3)(zod@3.25.76)
+      '@qorechain/qorex-wallet-mock': 0.1.0(typescript@5.7.3)(zod@4.6.7)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -3370,7 +3444,7 @@ snapshots:
 
   '@qorechain/qorex-types@0.1.0': {}
 
-  '@qorechain/qorex-wallet-mock@0.1.0(typescript@5.7.3)(zod@3.25.76)':
+  '@qorechain/qorex-wallet-mock@0.1.0(typescript@5.7.3)(zod@4.6.7)':
     dependencies:
       '@noble/curves': 2.4.0
       '@noble/hashes': 2.4.0
@@ -3378,14 +3452,14 @@ snapshots:
       '@qorechain/qorex-types': 0.1.0
       '@scure/base': 2.4.0
       '@scure/bip39': 2.4.0
-      viem: 2.57.5(typescript@5.7.3)(zod@3.25.76)
+      viem: 2.57.5(typescript@5.7.3)(zod@4.6.7)
     transitivePeerDependencies:
       - bufferutil
       - typescript
       - utf-8-validate
       - zod
 
-  '@qorechain/sdk@0.14.0(viem@2.58.0(typescript@5.7.3)(zod@3.25.76))':
+  '@qorechain/sdk@0.14.0(viem@2.58.0(typescript@5.7.3)(zod@4.6.7))':
     dependencies:
       '@bufbuild/protobuf': 2.17.0
       '@cosmjs/amino': 0.39.0
@@ -3395,7 +3469,7 @@ snapshots:
       '@cosmjs/tendermint-rpc': 0.39.0
       '@noble/curves': 1.9.7
       '@noble/hashes': 1.8.0
-      '@qorechain/evm': 0.14.0(viem@2.58.0(typescript@5.7.3)(zod@3.25.76))
+      '@qorechain/evm': 0.14.0(viem@2.58.0(typescript@5.7.3)(zod@4.6.7))
       '@qorechain/pqc': 0.2.3
       '@scure/base': 1.2.6
       '@scure/bip32': 1.7.0
@@ -3404,7 +3478,7 @@ snapshots:
       cosmjs-types: 0.11.0
       micro-key-producer: 0.9.0
     optionalDependencies:
-      viem: 2.58.0(typescript@5.7.3)(zod@3.25.76)
+      viem: 2.58.0(typescript@5.7.3)(zod@4.6.7)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -3448,6 +3522,8 @@ snapshots:
   '@sec-ant/readable-stream@0.4.1': {}
 
   '@sindresorhus/merge-streams@4.0.0': {}
+
+  '@standard-schema/spec@1.1.0': {}
 
   '@supabase/auth-js@2.119.0':
     dependencies:
@@ -3586,10 +3662,14 @@ snapshots:
       next: 16.4.6(@babel/core@7.29.7)(@playwright/test@1.65.1)(@types/node@24.10.4)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react: 19.2.4
 
-  abitype@1.2.3(typescript@5.7.3)(zod@3.25.76):
+  '@vercel/oidc@3.2.0': {}
+
+  '@workflow/serde@4.1.0': {}
+
+  abitype@1.2.3(typescript@5.7.3)(zod@4.6.7):
     optionalDependencies:
       typescript: 5.7.3
-      zod: 3.25.76
+      zod: 4.6.7
 
   accepts@2.0.0:
     dependencies:
@@ -3601,6 +3681,13 @@ snapshots:
       debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
+
+  ai@7.0.176(zod@4.6.7):
+    dependencies:
+      '@ai-sdk/gateway': 4.0.149(zod@4.6.7)
+      '@ai-sdk/provider': 4.0.39
+      '@ai-sdk/provider-utils': 5.0.82(zod@4.6.7)
+      zod: 4.6.7
 
   ajv-formats@3.0.1(ajv@8.20.0):
     optionalDependencies:
@@ -4204,6 +4291,8 @@ snapshots:
 
   json-schema-typed@8.0.2: {}
 
+  json-schema@0.4.0: {}
+
   json5@2.2.3: {}
 
   jsonfile@6.2.1:
@@ -4433,7 +4522,7 @@ snapshots:
       string-width: 7.2.0
       strip-ansi: 7.2.0
 
-  ox@0.14.56(typescript@5.7.3)(zod@3.25.76):
+  ox@0.14.56(typescript@5.7.3)(zod@4.6.7):
     dependencies:
       '@adraffy/ens-normalize': 1.11.1
       '@noble/ciphers': 1.3.0
@@ -4441,14 +4530,14 @@ snapshots:
       '@noble/hashes': 1.8.0
       '@scure/bip32': 1.7.0
       '@scure/bip39': 1.6.0
-      abitype: 1.2.3(typescript@5.7.3)(zod@3.25.76)
+      abitype: 1.2.3(typescript@5.7.3)(zod@4.6.7)
       eventemitter3: 5.0.1
     optionalDependencies:
       typescript: 5.7.3
     transitivePeerDependencies:
       - zod
 
-  ox@0.14.67(typescript@5.7.3)(zod@3.25.76):
+  ox@0.14.67(typescript@5.7.3)(zod@4.6.7):
     dependencies:
       '@adraffy/ens-normalize': 1.11.1
       '@noble/ciphers': 1.3.0
@@ -4456,7 +4545,7 @@ snapshots:
       '@noble/hashes': 1.8.0
       '@scure/bip32': 1.7.0
       '@scure/bip39': 1.6.0
-      abitype: 1.2.3(typescript@5.7.3)(zod@3.25.76)
+      abitype: 1.2.3(typescript@5.7.3)(zod@4.6.7)
       eventemitter3: 5.0.1
     optionalDependencies:
       typescript: 5.7.3
@@ -4884,15 +4973,15 @@ snapshots:
 
   vary@1.1.2: {}
 
-  viem@2.57.5(typescript@5.7.3)(zod@3.25.76):
+  viem@2.57.5(typescript@5.7.3)(zod@4.6.7):
     dependencies:
       '@noble/curves': 1.9.1
       '@noble/hashes': 1.8.0
       '@scure/bip32': 1.7.0
       '@scure/bip39': 1.6.0
-      abitype: 1.2.3(typescript@5.7.3)(zod@3.25.76)
+      abitype: 1.2.3(typescript@5.7.3)(zod@4.6.7)
       isows: 1.0.7(ws@8.21.0)
-      ox: 0.14.56(typescript@5.7.3)(zod@3.25.76)
+      ox: 0.14.56(typescript@5.7.3)(zod@4.6.7)
       ws: 8.21.0
     optionalDependencies:
       typescript: 5.7.3
@@ -4901,15 +4990,15 @@ snapshots:
       - utf-8-validate
       - zod
 
-  viem@2.58.0(typescript@5.7.3)(zod@3.25.76):
+  viem@2.58.0(typescript@5.7.3)(zod@4.6.7):
     dependencies:
       '@noble/curves': 1.9.1
       '@noble/hashes': 1.8.0
       '@scure/bip32': 1.7.0
       '@scure/bip39': 1.6.0
-      abitype: 1.2.3(typescript@5.7.3)(zod@3.25.76)
+      abitype: 1.2.3(typescript@5.7.3)(zod@4.6.7)
       isows: 1.0.7(ws@8.21.0)
-      ox: 0.14.67(typescript@5.7.3)(zod@3.25.76)
+      ox: 0.14.67(typescript@5.7.3)(zod@4.6.7)
       ws: 8.21.0
     optionalDependencies:
       typescript: 5.7.3

@@ -4,11 +4,15 @@ Nov 19, 2026 · @obijohnbosco163 · QoreChain “Build Before Q-Day” Developer
 
 ## Prototype status
 
+![Qampus featured image](public/qampus-featured.png)
+
 The app now includes email/password accounts linked to QoreX wallets, authenticated campus feed and milestone publishing, public Passports and milestone pages, consent-based Circle requests, and a public chain-verification page. Public post pages expose only data allowed by the existing Supabase RLS policies; public Passports list only public milestones.
 
 `contracts/QampusRegistry.sol` and a Foundry test suite are in the repository. The contract compiles, but it has not been deployed; set `NEXT_PUBLIC_QAMPUS_REGISTRY_ADDRESS` after deployment before anchoring can be enabled. The anchor path validates the linked wallet, receipt, contract event, content fingerprint, and indexed block. QoreChain EVM transactions require an active authorization window; the window is opened separately through QoreX.
 
-Sealed posts remain disabled because the app does not yet have recipient-card/key lifecycle storage or recovery. Role-verified endorsements, @tag notifications, moderation tooling, and the MCP-backed AI verifier are also not represented as shipped features. Foundry tests are authored and compile, but could not be executed in this environment because `forge` is unavailable. Do not present an unconfigured or unverified anchor as a live chain proof.
+The authenticated moderation queue lets moderators dismiss or mark reports reviewed; it does not remove reported content. Grant access only through trusted Supabase Auth `app_metadata` (`role: "moderator"`), never user-editable metadata. The Qampus Verifier reads public transaction and PQ-signature status through QoreChain MCP, then uses AI Gateway to explain the evidence; it does not receive milestone text or assert real-world authenticity. Its route requires sign-in and has a best-effort per-instance request limit. No Qampus anchor-specific AI answer has been exercised because the contract is not deployed.
+
+Sealed posts remain disabled because there is no reviewed recipient-key lifecycle or recovery flow, and QoreSeal 0.1.0 states its construction is pending external review. Role-verified endorsements and @tag notifications are not implemented. `cbom.json` is a QoreScan inventory aid, not an audit or certification. Foundry tests are authored but could not be executed because `forge` is unavailable. Do not present an unconfigured or unverified anchor as a live chain proof.
 
 # Project Title
 
