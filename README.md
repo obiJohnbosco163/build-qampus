@@ -132,7 +132,7 @@ Labels are what make Qampus feel like campus. A label is a directed, consented e
 
 ## Design language
 
-Dark base with one electric-violet accent (a “quantum” glow), monospaced bracket labels such as \[ 01 / MILESTONES \], terminal-style headings like \>\_ passport.verify, and warm, friendly campus copy. Mobile first, because students are on phones. Respect prefers-reduced-motion.
+Dark base with one electric-violet accent (a “quantum” glow), monospaced bracket labels such as \[ 01 / MILESTONES \], terminal-style headings like \>\_ Qampus.verify, and warm, friendly campus copy. Mobile first, because students are on phones. Respect prefers-reduced-motion.
 
 # Alignment with Hackathon Theme
 
