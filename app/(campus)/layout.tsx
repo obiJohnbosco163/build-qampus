@@ -14,5 +14,5 @@ export default async function CampusLayout({ children }: Readonly<{ children: Re
     .maybeSingle()
   if (!profile) redirect('/onboarding')
 
-  return <PlatformShell profile={profile}>{children}</PlatformShell>
+  return <PlatformShell profile={profile} isModerator={user.app_metadata?.role === 'moderator'}>{children}</PlatformShell>
 }

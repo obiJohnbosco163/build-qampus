@@ -7,6 +7,7 @@ import { qorechainPublicClient, registryAddress } from '@/lib/qorechain/evm'
 import { milestoneFingerprint } from '@/lib/qorechain/fingerprint'
 import { milestoneTypeCode, registryAbi, type MilestoneFingerprintInput } from '@/lib/qorechain/registry'
 import { qorToEvm } from '@qorechain/sdk'
+import { VerifierExplainer } from '@/components/qampus/verifier-explainer'
 
 export default async function VerifyPostPage({ params }: { params: Promise<{ postId: string }> }) {
   const { postId } = await params
@@ -79,6 +80,7 @@ export default async function VerifyPostPage({ params }: { params: Promise<{ pos
           <div className="verify-result-icon">{chainStatus === 'verified' ? <Check size={19} /> : chainStatus === 'mismatch' ? <CircleAlert size={19} /> : <Fingerprint size={19} />}</div>
           <div><span className="verify-result-eyebrow">{chainStatus === 'verified' ? 'CHAIN RECORD MATCHES' : chainStatus === 'mismatch' ? 'RECORD DOES NOT MATCH' : chainStatus === 'unavailable' ? 'VERIFICATION TEMPORARILY UNAVAILABLE' : 'NO ANCHOR FOUND'}</span><h2>{chainStatus === 'verified' ? 'Milestone verified' : chainStatus === 'mismatch' ? 'Verification failed' : chainStatus === 'unavailable' ? 'Could not reach the registry' : 'This milestone is not anchored'}</h2><p>{chainStatus === 'verified' ? 'The content fingerprint, author wallet, transaction event, and indexed block all match the contract record.' : chainStatus === 'mismatch' ? 'The indexed record or current milestone content differs from the contract. Do not treat this as verified.' : chainStatus === 'unavailable' ? 'The public chain or contract configuration could not be reached. Try again later.' : 'The author has not published an on-chain proof for this milestone.'}</p></div>
         </section>
+        {anchor ? <VerifierExplainer postId={post.id} /> : null}
         <section className="verify-details"><div className="verify-detail-heading"><div><p className="section-label">[ MILESTONE ]</p><h2>{post.title || 'Untitled milestone'}</h2></div>{chainStatus === 'verified' ? <span className="verify-stamp"><ShieldCheck size={14} /> VERIFIED</span> : null}</div><p className="verify-author">By {profile?.display_name ?? 'Qampus member'}{profile?.handle ? ` · @${profile.handle}` : ''}</p><div className="verify-data-grid"><div><span>CONTENT FINGERPRINT</span><code>{anchor?.content_hash ?? 'Not available'}</code></div><div><span>TRANSACTION HASH</span><code>{anchor?.tx_hash ?? 'Not available'}</code></div><div><span>CONTRACT</span><code>{anchor?.contract_address ?? registryAddress() ?? 'Not configured'}</code></div><div><span>BLOCK</span><code>{anchor?.block_number ?? 'Not available'}</code></div><div><span>INDEXED AT</span><code>{anchor ? new Date(anchor.anchored_at).toLocaleString() : 'Not available'}</code></div><div><span>NETWORK</span><code>{anchor?.chain_id ?? 'qorechain-diana'}</code></div></div>{post.story && <div className="verify-content-check"><span>CONTENT CHECK</span><code>{milestoneFingerprint(post as MilestoneFingerprintInput)}</code></div>}</section>
       </div>
     </main>

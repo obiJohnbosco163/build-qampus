@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 
 const milestoneTypes = new Set(['siwes', 'project', 'internal_defence', 'external_defence', 'experience', 'general'])
@@ -92,6 +93,27 @@ export async function reportPost(formData: FormData) {
 
   revalidatePath(`/p/${postId}`)
   redirect(`/p/${postId}?report=submitted`)
+}
+
+export async function reviewReport(formData: FormData) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (user?.app_metadata?.role !== 'moderator') redirect('/feed')
+
+  const reportId = String(formData.get('report_id') ?? '')
+  const decision = String(formData.get('decision') ?? '')
+  if (!/^[0-9a-f-]{36}$/i.test(reportId) || !['resolved', 'dismissed'].includes(decision)) redirect('/moderation?error=validation')
+
+  const admin = createAdminClient()
+  const { error } = await admin
+    .from('reports')
+    .update({ status: decision })
+    .eq('id', reportId)
+    .eq('status', 'open')
+  if (error) redirect('/moderation?error=save')
+
+  revalidatePath('/moderation')
+  redirect('/moderation')
 }
 
 export async function signOut() {
