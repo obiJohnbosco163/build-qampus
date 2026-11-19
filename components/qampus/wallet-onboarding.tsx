@@ -70,7 +70,7 @@ export function WalletOnboarding() {
       })
       const result = await verifyResponse.json()
       if (!verifyResponse.ok) throw new Error(result.error ?? 'Could not verify your wallet.')
-      router.push('/')
+      router.push('/feed')
       router.refresh()
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : 'Wallet linking failed. Please try again.')

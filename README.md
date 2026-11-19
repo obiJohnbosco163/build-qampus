@@ -2,6 +2,14 @@
 
 Nov 19, 2026 · @obijohnbosco163 · QoreChain “Build Before Q-Day” Developer Fest (build.qorechain.io)
 
+## Prototype status
+
+The app now includes email/password accounts linked to QoreX wallets, authenticated campus feed and milestone publishing, public Passports and milestone pages, consent-based Circle requests, and a public chain-verification page. Public post pages expose only data allowed by the existing Supabase RLS policies; public Passports list only public milestones.
+
+`contracts/QampusRegistry.sol` and a Foundry test suite are in the repository. The contract compiles, but it has not been deployed; set `NEXT_PUBLIC_QAMPUS_REGISTRY_ADDRESS` after deployment before anchoring can be enabled. The anchor path validates the linked wallet, receipt, contract event, content fingerprint, and indexed block. QoreChain EVM transactions require an active authorization window; the window is opened separately through QoreX.
+
+Sealed posts remain disabled because the app does not yet have recipient-card/key lifecycle storage or recovery. Role-verified endorsements, @tag notifications, moderation tooling, and the MCP-backed AI verifier are also not represented as shipped features. Foundry tests are authored and compile, but could not be executed in this environment because `forge` is unavailable. Do not present an unconfigured or unverified anchor as a live chain proof.
+
 # Project Title
 
 **Qampus** (pronounced “campus”, the Q is for QoreChain) is a social platform built only for campus students. Students post the milestones that define their school years (SIWES training, what they built, project defences, internal and external defence reports, photos, videos and demos), label every friend by their real campus role (course rep, level mate, dev bro, tech sis, departmental president and more), tag them in posts, and can then **anchor** any milestone on QoreChain so it becomes a tamper-proof, post-quantum-signed record that supervisors and employers can verify.
@@ -50,7 +58,7 @@ Qampus has four layers so each stays simple:
 
 - **The Milestone Layer:** structured posts for SIWES, projects, defences and experiences, each with media, documents and a chosen visibility.
 
-- **The Trust Layer:** a student can **anchor** a milestone: the app hashes the content and writes the hash, type and timestamp to the QampusRegistry contract with a hybrid (secp256k1 + ML-DSA-87) signed transaction. A supervisor can **endorse** it with their own signed attestation. Anyone can verify an anchor without trusting Qampus.
+- **The Trust Layer:** a student can **anchor** a milestone: the app hashes the content and writes the hash, type and timestamp to the QampusRegistry contract. On QoreChain Diana, the EVM transaction requires an account with a registered post-quantum key and an active authorization window; opening that window is a separate hybrid-authorized native transaction. A supervisor can **endorse** an anchor. Anyone can compare a milestone with its on-chain record.
 
 - **The Privacy Layer:** drafts, defence reports and personal posts can be encrypted to chosen people (supervisor, course mates, one Circle) using QoreSeal (ML-KEM-1024 envelopes). Public posts stay public; private ones are readable only by recipients.
 

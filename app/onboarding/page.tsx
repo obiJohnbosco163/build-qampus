@@ -13,7 +13,7 @@ export default async function OnboardingPage() {
     .select('id')
     .eq('id', user.id)
     .maybeSingle()
-  if (profile) redirect('/')
+  if (profile) redirect('/feed')
 
   return (
     <main className="qampus-shell auth-shell">

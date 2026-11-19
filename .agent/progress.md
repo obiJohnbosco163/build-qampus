@@ -1,18 +1,19 @@
 # Qampus build log
 
 ## Current phase
-P0 — environment, scaffold, QoreChain SDK verification.
+P1 — authenticated campus product, QoreChain registry and verification.
 
 ## Decisions
-- Existing project is Next.js 16 App Router + TypeScript + Tailwind + pnpm. Kept this scaffold rather than overwriting it with the official Vite `fullstack-web` template; it preserves the app's requested framework and provides the same baseline app role.
-- QoreChain SDK packages were queried from npm and installed at the published versions; installed READMEs/types take precedence over proposal assumptions.
-- Supabase is connected; the live project has zero tables. Do not write app data code until its RLS schema is applied.
+- Existing project is Next.js 16 App Router + TypeScript + Tailwind + pnpm; retained the scaffold.
+- Supabase core schema is applied and RLS is enabled for profiles, posts, recipients, Circles, media, anchors, endorsements, and reports. Runtime app queries use the authenticated Supabase server client; only verified on-chain events are inserted with the admin client.
+- Identity is email/password plus a linked QoreX wallet, per the user's choice. Never derive, request, or store wallet PQ secrets in the app.
+- QoreChain documentation confirms EVM writes require a registered PQC key and an active EVM authorization window opened separately through QoreX. The EVM transaction itself is not described as a hybrid signature.
 
 ## Environment checks
-- Node v24.16.0; pnpm 12.3.4; Git 2.50.1; jq 1.8.1.
-- Foundry `forge` is not installed in the sandbox.
-- `pnpm add` fetched and linked QoreChain SDK packages, but exited with `ERR_PNPM_IGNORED_BUILDS` because `protobufjs@6.11.6`'s build script is not approved. Investigate before relying on package code.
-- No MCP servers are connected to the v0 agent. QoreChain MCP CLI mode and tool invocation remain to verify.
+- Node v24.16.0; pnpm 12.3.4; Git 2.50.1.
+- Foundry `forge` and a connected QoreChain MCP server are unavailable in this sandbox.
+- Solidity contract and test sources compile with solc 0.8.30; Foundry test execution remains unverified.
+- No registry contract address is configured and no contract has been deployed to Diana testnet.
 
 ## API corrections
 - `@qorechain/wallet-adapter@0.6.0` documents QoreX's `qorexSignAndBroadcast` as the dApp transaction path; the QoreX wallet owns PQ key registration and the app must not derive/store wallet PQ secrets. QoreX controls PQC key and EVM-window management; the adapter rejects dApp requests to manage those keys/windows.
@@ -24,5 +25,15 @@ P0 — environment, scaffold, QoreChain SDK verification.
 - npm registry versions checked: sdk/evm 0.14.0; wallet-adapter 0.6.0; qoresign 0.2.0; pqc 0.2.3; qoreseal/handles 0.1.0; mcp/qore-cli/qorex-wallet-mock/qorex-synpress/qorescan 0.1.1/0.1.1/0.1.0/0.1.0/0.1.0.
 - Proposal copied to root `README.md` as requested.
 
-## Next
-Resolve install script approval, run QoreChain MCP `get_chain_info`, build the first product slice, then request QoreX/faucet actions from the user when needed for real testnet transactions.
+## Delivered in this pass
+- Authenticated feed, milestone composer/detail, public Passports, consent-based Circle requests, inbox, settings/sign-out, and public verification page.
+- QampusRegistry anchor/endorsement contract, fingerprint helper, receipt/event validation and Supabase anchor indexing route.
+- QoreX-linked wallet matching and EVM-window messaging in the anchor UI.
+- Security headers already present; production build and TypeScript checks pass.
+- Added an authenticated post-report flow using the existing reports table and submitter-only RLS policy; users cannot report their own posts. TypeScript, production build, and all four Playwright security tests pass.
+
+## Remaining external setup / scope
+- Deploy the contract and set `NEXT_PUBLIC_QAMPUS_REGISTRY_ADDRESS` before live anchors are possible.
+- Sealed posts need a recipient-card and encryption-key lifecycle/recovery design; keep them disabled until that exists.
+- Role-verified endorsement UI, @tag notifications, moderator review/decision queue, and MCP-backed AI verification are not implemented. User report submission is live; do not imply moderation review is live.
+- `forge test` could not run because Foundry is unavailable; the test suite only compiled with solc.
