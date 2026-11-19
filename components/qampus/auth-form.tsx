@@ -46,7 +46,7 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
             .select('id')
             .eq('id', data.user.id)
             .maybeSingle()
-          router.push(profile ? '/' : '/onboarding')
+          router.push(profile ? '/feed' : '/onboarding')
           router.refresh()
         }
       }
