@@ -1,11 +1,11 @@
 import { createHmac, timingSafeEqual } from 'node:crypto'
 import { verifySiwq, type SiwqSignature } from '@qorechain/qoresign'
+import { QORECHAIN_MAINNET_CHAIN_ID, QORECHAIN_TESTNET_CHAIN_ID } from '@qorechain/qorex-types'
 import { NextResponse, type NextRequest } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 
 const cookieName = 'qampus_wallet_challenge'
-const chainId = 'qorechain-diana'
 
 function signatureFor(value: string) {
   return createHmac('sha256', process.env.SUPABASE_JWT_SECRET!).update(value).digest('base64url')
@@ -20,12 +20,15 @@ function readChallenge(value: string | undefined) {
   const expected = Buffer.from(expectedSignature)
   if (provided.length !== expected.length || !timingSafeEqual(provided, expected)) return null
   try {
-    return JSON.parse(Buffer.from(payload, 'base64url').toString('utf8')) as {
+    const challenge = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8')) as {
       userId: string
       nonce: string
       message: string
+      chainId: string
       expiresAt: number
     }
+    if (challenge.chainId !== QORECHAIN_MAINNET_CHAIN_ID && challenge.chainId !== QORECHAIN_TESTNET_CHAIN_ID) return null
+    return challenge
   } catch {
     return null
   }
@@ -83,7 +86,7 @@ export async function POST(request: NextRequest) {
       signature: input.signature,
       domain: request.nextUrl.host,
       nonce: challenge.nonce,
-      chainId,
+      chainId: challenge.chainId,
       requirePq: false,
     })
     if (fields.requestId !== user.id) {

@@ -1,10 +1,10 @@
 import { createHmac, randomBytes } from 'node:crypto'
 import { createSiwqMessage, parseAddress } from '@qorechain/qoresign'
+import { QORECHAIN_MAINNET_CHAIN_ID, QORECHAIN_TESTNET_CHAIN_ID } from '@qorechain/qorex-types'
 import { NextResponse, type NextRequest } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 
-const chainId = 'qorechain-diana'
 const cookieName = 'qampus_wallet_challenge'
 
 function signChallenge(value: string) {
@@ -21,12 +21,17 @@ export async function POST(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Sign in to continue.' }, { status: 401 })
 
-  let input: { address?: string }
+  let input: { address?: string; chainId?: string }
   try {
     input = await request.json()
   } catch {
     return NextResponse.json({ error: 'Invalid request.' }, { status: 400 })
   }
+  if (input.chainId !== QORECHAIN_MAINNET_CHAIN_ID && input.chainId !== QORECHAIN_TESTNET_CHAIN_ID) {
+    return NextResponse.json({ error: 'Connect QoreX to QoreChain mainnet or Diana testnet.' }, { status: 400 })
+  }
+  const chainId = input.chainId
+
   if (!input.address || input.address.length > 64) {
     return NextResponse.json({ error: 'Connect a valid QoreChain wallet.' }, { status: 400 })
   }
@@ -66,7 +71,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Could not create a wallet challenge. Please try again.' }, { status: 503 })
   }
 
-  const payload = Buffer.from(JSON.stringify({ userId: user.id, nonce, message, expiresAt: expiresAt.getTime() })).toString('base64url')
+  const payload = Buffer.from(JSON.stringify({ userId: user.id, nonce, message, chainId, expiresAt: expiresAt.getTime() })).toString('base64url')
   const value = `${payload}.${signChallenge(payload)}`
   const response = NextResponse.json({ message, chainId })
   response.cookies.set(cookieName, value, {

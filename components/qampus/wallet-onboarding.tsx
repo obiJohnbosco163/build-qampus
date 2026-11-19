@@ -2,7 +2,13 @@
 
 import { useState, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
-import { getQorexNative } from '@qorechain/qorex-types'
+import {
+  getQorexNative,
+  QORECHAIN_MAINNET_CHAIN_ID,
+  QORECHAIN_MAINNET_EVM_CHAIN_ID,
+  QORECHAIN_TESTNET_CHAIN_ID,
+  QORECHAIN_TESTNET_EVM_CHAIN_ID,
+} from '@qorechain/qorex-types'
 
 type WalletSignature = {
   pub_key?: { type?: string; value?: string }
@@ -25,17 +31,27 @@ export function WalletOnboarding() {
       const wallet = getQorexNative()
       if (!wallet) throw new Error('QoreX was not detected in this page. Unlock the extension, reload Qampus, and try again.')
 
-      const chainId = 'qorechain-diana'
+      const evm = window.qorex?.evm
+      if (!evm) throw new Error('QoreX native wallet was found, but its network could not be detected. Reload Qampus and try again.')
+
+      const activeEvmChainId = Number(await evm.request({ method: 'eth_chainId' }))
+      const chainId = activeEvmChainId === QORECHAIN_MAINNET_EVM_CHAIN_ID
+        ? QORECHAIN_MAINNET_CHAIN_ID
+        : activeEvmChainId === QORECHAIN_TESTNET_EVM_CHAIN_ID
+          ? QORECHAIN_TESTNET_CHAIN_ID
+          : null
+      if (!chainId) throw new Error('Select QoreChain mainnet or Diana testnet in QoreX, then try again.')
+
       await wallet.enable(chainId)
       const key = await wallet.getKey(chainId)
       const address = key.bech32Address
-      if (!address?.startsWith('qor1')) throw new Error('Switch QoreX to the QoreChain Diana network and try again.')
+      if (!address?.startsWith('qor1')) throw new Error('Connect QoreX to the selected QoreChain network and try again.')
       setConnectedAddress(address)
 
       const challengeResponse = await fetch('/api/auth/wallet/challenge', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ address }),
+        body: JSON.stringify({ address, chainId }),
       })
       const challenge = await challengeResponse.json()
       if (!challengeResponse.ok) throw new Error(challenge.error ?? 'Could not start wallet verification.')
