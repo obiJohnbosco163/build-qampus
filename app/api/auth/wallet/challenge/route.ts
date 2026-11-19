@@ -1,6 +1,7 @@
 import { createHmac, randomBytes } from 'node:crypto'
 import { createSiwqMessage, parseAddress } from '@qorechain/qoresign'
 import { NextResponse, type NextRequest } from 'next/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 
 const chainId = 'qorechain-diana'
@@ -54,6 +55,17 @@ export async function POST(request: NextRequest) {
     expirationTime: expiresAt.toISOString(),
     requestId: user.id,
   })
+  const admin = createAdminClient()
+  const { error } = await admin.from('wallet_link_challenges').insert({
+    nonce,
+    user_id: user.id,
+    message,
+    expires_at: expiresAt.toISOString(),
+  })
+  if (error) {
+    return NextResponse.json({ error: 'Could not create a wallet challenge. Please try again.' }, { status: 503 })
+  }
+
   const payload = Buffer.from(JSON.stringify({ userId: user.id, nonce, message, expiresAt: expiresAt.getTime() })).toString('base64url')
   const value = `${payload}.${signChallenge(payload)}`
   const response = NextResponse.json({ message, chainId })

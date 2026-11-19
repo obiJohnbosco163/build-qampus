@@ -45,6 +45,22 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Your wallet challenge expired. Please try again.' }, { status: 400 })
   }
 
+  const admin = createAdminClient()
+  const consumedAt = new Date().toISOString()
+  const { data: storedChallenge, error: consumeError } = await admin
+    .from('wallet_link_challenges')
+    .update({ consumed_at: consumedAt })
+    .eq('nonce', challenge.nonce)
+    .eq('user_id', user.id)
+    .is('consumed_at', null)
+    .gt('expires_at', consumedAt)
+    .select('message')
+    .maybeSingle()
+
+  if (consumeError || !storedChallenge || storedChallenge.message !== challenge.message) {
+    return NextResponse.json({ error: 'Your wallet challenge expired or was already used. Please try again.' }, { status: 400 })
+  }
+
   let input: { signature?: SiwqSignature; displayName?: string; handle?: string }
   try {
     input = await request.json()
@@ -74,7 +90,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'The signature does not match this account challenge.' }, { status: 400 })
     }
 
-    const admin = createAdminClient()
     const { error } = await admin.from('profiles').upsert({
       id: user.id,
       wallet_address: fields.address,
