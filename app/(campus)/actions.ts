@@ -37,26 +37,15 @@ export async function createPost(formData: FormData) {
     redirect('/post/new?error=tag')
   }
 
-  const { data: post, error } = await supabase
+  const postId = crypto.randomUUID()
+  const { error } = await supabase
     .from('posts')
-    .insert({ author_id: user.id, milestone_type: milestoneType, title, summary: summary || null, story, visibility })
-    .select('id')
-    .single()
+    .insert({ id: postId, author_id: user.id, milestone_type: milestoneType, title, summary: summary || null, story, visibility })
 
-  if (error) {
-    console.log('[v0] Posts insert error:', error)
-    console.log('[v0] Error code:', error.code)
-    console.log('[v0] Error message:', error.message)
-    console.log('[v0] Error details:', JSON.stringify(error, null, 2))
-    console.log('[v0] Insert data:', { author_id: user.id, milestone_type: milestoneType, title, summary: summary || null, story, visibility })
-  }
-  if (error || !post) {
-    console.log('[v0] REDIRECT to /post/new?error=save - error:', !!error, 'post:', !!post)
-    redirect(`/post/new?error=save&code=${encodeURIComponent(error?.code ?? 'no-row')}`)
-  }
+  if (error) redirect(`/post/new?error=save&code=${encodeURIComponent(error.code ?? 'unknown')}`)
   if (taggedProfiles?.length) {
     const { error: tagError } = await supabase.from('post_tags').insert(taggedProfiles.map((profile) => ({
-      post_id: post.id,
+      post_id: postId,
       tagged_by: user.id,
       tagged_user_id: profile.id,
     })))
@@ -69,7 +58,7 @@ export async function createPost(formData: FormData) {
   }
   revalidatePath('/feed')
   revalidatePath('/inbox')
-  redirect(`/p/${post.id}`)
+  redirect(`/p/${postId}`)
 }
 
 export async function createCircleRequest(formData: FormData) {
