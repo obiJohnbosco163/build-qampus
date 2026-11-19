@@ -14,6 +14,13 @@ export const metadata: Metadata = {
       'Keep your campus milestones together. Make the important ones verifiable.',
     siteName: 'Qampus',
     type: 'website',
+    images: [{ url: '/qampus-featured.png', width: 1424, height: 752, alt: 'Your campus story, proven.' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Qampus — Your campus story, proven.',
+    description: 'Keep your campus milestones together. Make the important ones verifiable.',
+    images: ['/qampus-featured.png'],
   },
   icons: {
     icon: [

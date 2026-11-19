@@ -4,6 +4,8 @@ Nov 19, 2026 · @obijohnbosco163 · QoreChain “Build Before Q-Day” Developer
 
 ## Prototype status
 
+![Qampus featured image](public/qampus-featured.png)
+
 The app now includes email/password accounts linked to QoreX wallets, authenticated campus feed and milestone publishing, public Passports and milestone pages, consent-based Circle requests, and a public chain-verification page. Public post pages expose only data allowed by the existing Supabase RLS policies; public Passports list only public milestones.
 
 `contracts/QampusRegistry.sol` and a Foundry test suite are in the repository. The contract compiles, but it has not been deployed; set `NEXT_PUBLIC_QAMPUS_REGISTRY_ADDRESS` after deployment before anchoring can be enabled. The anchor path validates the linked wallet, receipt, contract event, content fingerprint, and indexed block. QoreChain EVM transactions require an active authorization window; the window is opened separately through QoreX.
