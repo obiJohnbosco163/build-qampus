@@ -47,8 +47,13 @@ export async function createPost(formData: FormData) {
     console.log('[v0] Posts insert error:', error)
     console.log('[v0] Error code:', error.code)
     console.log('[v0] Error message:', error.message)
+    console.log('[v0] Error details:', JSON.stringify(error, null, 2))
+    console.log('[v0] Insert data:', { author_id: user.id, milestone_type: milestoneType, title, summary: summary || null, story, visibility })
   }
-  if (error || !post) redirect('/post/new?error=save')
+  if (error || !post) {
+    console.log('[v0] REDIRECT to /post/new?error=save - error:', !!error, 'post:', !!post)
+    redirect('/post/new?error=save')
+  }
   if (taggedProfiles?.length) {
     const { error: tagError } = await supabase.from('post_tags').insert(taggedProfiles.map((profile) => ({
       post_id: post.id,
