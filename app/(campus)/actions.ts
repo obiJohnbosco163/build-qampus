@@ -24,9 +24,17 @@ export async function createPost(formData: FormData) {
   const summary = String(formData.get('summary') ?? '').trim()
   const story = String(formData.get('story') ?? '').trim()
   const visibility = String(formData.get('visibility') ?? '')
+  const handles = [...new Set(String(formData.get('tag_handles') ?? '').split(/[\s,]+/).map((handle) => handle.trim().replace(/^@/, '').toLowerCase()).filter(Boolean))]
 
-  if (!milestoneTypes.has(milestoneType) || title.length < 3 || title.length > 120 || summary.length > 140 || story.length < 10 || story.length > 8000 || !['public', 'campus'].includes(visibility)) {
+  if (!milestoneTypes.has(milestoneType) || title.length < 3 || title.length > 120 || summary.length > 140 || story.length < 10 || story.length > 8000 || !['public', 'campus'].includes(visibility) || handles.length > 10 || handles.some((handle) => !/^[a-z0-9_]{3,24}$/.test(handle))) {
     redirect('/post/new?error=validation')
+  }
+
+  const { data: taggedProfiles, error: lookupError } = handles.length
+    ? await supabase.from('profiles').select('id, handle').in('handle', handles)
+    : { data: [], error: null }
+  if (lookupError || (taggedProfiles?.length ?? 0) !== handles.length || taggedProfiles?.some((profile) => profile.id === user.id)) {
+    redirect('/post/new?error=tag')
   }
 
   const { data: post, error } = await supabase
@@ -36,7 +44,16 @@ export async function createPost(formData: FormData) {
     .single()
 
   if (error || !post) redirect('/post/new?error=save')
+  if (taggedProfiles?.length) {
+    const { error: tagError } = await supabase.from('post_tags').insert(taggedProfiles.map((profile) => ({
+      post_id: post.id,
+      tagged_by: user.id,
+      tagged_user_id: profile.id,
+    })))
+    if (tagError) redirect('/post/new?error=tag-save')
+  }
   revalidatePath('/feed')
+  revalidatePath('/inbox')
   redirect(`/p/${post.id}`)
 }
 
@@ -114,6 +131,24 @@ export async function reviewReport(formData: FormData) {
 
   revalidatePath('/moderation')
   redirect('/moderation')
+}
+
+export async function respondToPostTag(formData: FormData) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/auth/sign-in')
+
+  const tagId = String(formData.get('tag_id') ?? '')
+  const status = String(formData.get('status') ?? '')
+  if (!/^[0-9a-f-]{36}$/i.test(tagId) || !['accepted', 'hidden', 'removed'].includes(status)) redirect('/inbox?error=validation')
+
+  const { error } = await supabase.from('post_tags').update({ status }).eq('id', tagId).eq('tagged_user_id', user.id).eq('status', 'pending')
+  if (error) redirect('/inbox?error=save')
+  const { data: notification } = await supabase.from('notifications').select('id').eq('tag_id', tagId).maybeSingle()
+  if (notification) await supabase.from('notifications').update({ read_at: new Date().toISOString() }).eq('id', notification.id)
+  revalidatePath('/inbox')
+  revalidatePath('/feed')
+  redirect('/inbox')
 }
 
 export async function signOut() {
